@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Carroll Laundry</string>
+    <string name="title_activity_machine_view">MachineView</string>
+</resources>
