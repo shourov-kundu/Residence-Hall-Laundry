@@ -17,7 +17,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         addListenerOnButton();
-
         SharedPreferences settings = getApplicationContext().getSharedPreferences("PREFS_NAME", 0);
         boolean loginStatus = settings.getBoolean("loggedIn", false);
         if (loginStatus){
@@ -32,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (passwordText.getText().toString().equals("")){/*REDACTED FOR GITHUB*/
+                if (passwordText.getText().toString().equals("")){/*Redacted for Github*/
                     SharedPreferences settings = getApplicationContext().getSharedPreferences("PREFS_NAME", 0);
                     SharedPreferences.Editor editor = settings.edit();
                     editor.putBoolean("loggedIn", true);

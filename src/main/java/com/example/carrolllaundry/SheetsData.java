@@ -11,6 +11,7 @@ import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.sheets.v4.Sheets;
 import com.google.api.services.sheets.v4.SheetsScopes;
+import com.google.api.services.sheets.v4.model.BatchUpdateSpreadsheetRequest;
 import com.google.api.services.sheets.v4.model.ValueRange;
 
 import java.io.IOException;
@@ -25,8 +26,7 @@ public class SheetsData {
     private static final String TOKENS_DIRECTORY_PATH = "tokens";
 
     private static final List<String> SCOPES = Collections.singletonList(SheetsScopes.SPREADSHEETS_READONLY);
-    private static final String CREDENTIALS_FILE_PATH = "/src/main/resources/credentials.json";
-
+    private static final String CREDENTIALS_FILE_PATH = "app/src/main/res/credentials.json";
     /**
      * Creates an authorized Credential object.
      * @param HTTP_TRANSPORT The network HTTP Transport.
@@ -35,6 +35,12 @@ public class SheetsData {
      */
     private static Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT) throws IOException {
         // Load client secrets.
+        /*InputStream in = new InputStream() {
+            @Override
+            public int read()  {
+                return 0;
+            }
+        };*/
         InputStream in = SheetsData.class.getResourceAsStream(CREDENTIALS_FILE_PATH);
         GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(in));
 
@@ -51,12 +57,10 @@ public class SheetsData {
 
     public static boolean[] getData() throws IOException{
         final NetHttpTransport HTTP_TRANSPORT = new com.google.api.client.http.javanet.NetHttpTransport();
-        final String spreadsheetId = "";/*REDACTED FOR GITHUB*/
-        final String range = "Class Data!A2:E";
+        final String spreadsheetId = ""/*Redacted for Github*/;
+        final String range = "Sheet1!A1:A6";
         Sheets service = new Sheets.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
                 .setApplicationName(APPLICATION_NAME)
-
-
                 .build();
         ValueRange response = service.spreadsheets().values()
                 .get(spreadsheetId, range)
@@ -67,5 +71,21 @@ public class SheetsData {
             usages[i] = values.get(i).get(0).toString().compareTo("FREE") == 0;
         }
         return usages;
+    }
+    public static String getFirst() throws IOException{
+        final NetHttpTransport HTTP_TRANSPORT = new com.google.api.client.http.javanet.NetHttpTransport();
+        final String spreadsheetId = "1n84yXB9PLwH3IrZEp63ZOHY8fOKO-Htf_-B-f8S2Y9Q";
+        final String range = "Sheet1!A1:A6";
+        Sheets service = new Sheets.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
+                .setApplicationName(APPLICATION_NAME)
+                .build();
+        ValueRange response = service.spreadsheets().values()
+                .get(spreadsheetId, range)
+                .execute();
+        List<List<Object>> values = response.getValues();
+        return values.get(0).get(0).toString();
+    }
+    public static void readData() throws IOException{
+
     }
 }
